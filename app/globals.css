@@ -247,8 +247,6 @@ a { color: inherit; text-decoration: none; }
 
 /* =====================================================
    ABOUT — MOBILE REDESIGN (no sticky, pure flow)
-   A compact, non-sticky interactive section.
-   #about height:auto on mobile — zero sticky dependency.
 ===================================================== */
 .about-mobile-wrap {
   display: none; /* shown via media query */
@@ -257,10 +255,8 @@ a { color: inherit; text-decoration: none; }
   width: 100%;
 }
 
-/* ---- header ---- */
 .about-mob-header {
   padding: 56px 6vw 28px;
-  border-bottom: 1px solid var(--line);
 }
 .about-mob-eyebrow {
   font-family: var(--font-mono), 'JetBrains Mono', monospace;
@@ -276,70 +272,33 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.85rem; line-height: 1.72; color: #777; max-width: 36ch;
 }
 
-/* ---- tab row ---- */
-.about-mob-tabs {
-  display: flex; gap: 8px;
-  padding: 20px 6vw;
-  border-bottom: 1px solid var(--line);
-  overflow-x: auto; scrollbar-width: none;
-}
-.about-mob-tabs::-webkit-scrollbar { display: none; }
-.about-mob-tab {
-  flex-shrink: 0; display: flex; align-items: center; gap: 8px;
-  font-family: var(--font-mono), 'JetBrains Mono', monospace;
-  font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase;
-  padding: 9px 16px; border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.12); color: #555;
-  background: transparent; cursor: pointer;
-  transition: 0.3s var(--ease);
-}
-.about-mob-tab .tab-num {
-  font-size: 0.5rem; color: #444; transition: 0.3s;
-}
-.about-mob-tab.active {
-  border-color: rgba(31,207,255,0.5);
-  color: #fff;
-  background: rgba(31,207,255,0.07);
-}
-.about-mob-tab.active .tab-num { color: var(--accent); }
-
-/* ---- panel cards ---- */
 .about-mob-panels {
-  position: relative; overflow: hidden;
-  /* height set by JS via inline style so it matches tallest panel */
-  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+  padding: 0 6vw 56px;
+  gap: 20px;
 }
 .about-mob-panel {
-  position: absolute; inset: 0;
   padding: 28px 6vw 32px;
   display: flex; flex-direction: column; justify-content: center;
-  opacity: 0;
-  transform: translateX(28px);
-  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
-  pointer-events: none;
-  /* light panel bg */
-  background: #f5f5f5; color: #111;
+  background: #111; color: #fff;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.05);
+  position: relative;
   overflow: hidden;
-}
-.about-mob-panel.active {
-  opacity: 1; transform: translateX(0);
-  pointer-events: auto;
-}
-.about-mob-panel.exit-left {
-  opacity: 0; transform: translateX(-28px);
 }
 .about-mob-panel-kicker {
   font-family: var(--font-mono), 'JetBrains Mono', monospace;
   font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: #999; margin-bottom: 10px;
+  color: var(--accent); margin-bottom: 10px;
 }
 .about-mob-panel h3 {
   font-family: var(--font-space), 'Space Grotesk', sans-serif; font-weight: 600;
   font-size: clamp(1.9rem, 9vw, 2.8rem); line-height: 1.02;
-  letter-spacing: -0.03em; margin-bottom: 14px; color: #111;
+  letter-spacing: -0.03em; margin-bottom: 14px;
 }
 .about-mob-panel > p {
-  font-size: 0.85rem; line-height: 1.76; color: #555;
+  font-size: 0.85rem; line-height: 1.76; color: #999;
   max-width: 38ch;
 }
 .about-mob-panel .mob-mini-grid {
@@ -347,75 +306,105 @@ a { color: inherit; text-decoration: none; }
   gap: 7px; margin-top: 18px;
 }
 .about-mob-panel .mob-mini-tag {
-  padding: 10px 12px; border: 1px solid rgba(0,0,0,0.1);
+  padding: 10px 12px; border: 1px solid rgba(255,255,255,0.1);
   font-family: var(--font-mono), 'JetBrains Mono', monospace;
-  font-size: 0.57rem; letter-spacing: 0.04em; color: #555;
-  background: rgba(0,0,0,0.02);
+  font-size: 0.57rem; letter-spacing: 0.04em; color: #ccc;
+  background: rgba(255,255,255,0.02);
 }
-/* ghost number watermark */
 .about-mob-panel-ghost {
-  position: absolute; right: 4vw; bottom: -12px;
+  position: absolute; right: -5vw; bottom: -20px;
   font-family: var(--font-space), 'Space Grotesk', sans-serif; font-weight: 600;
-  font-size: 9rem; line-height: 1; color: rgba(0,0,0,0.04);
+  font-size: 9rem; line-height: 1; color: rgba(255,255,255,0.02);
   pointer-events: none; user-select: none;
-}
-
-/* ---- progress dots + swipe hint ---- */
-.about-mob-footer {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 6vw 28px;
-  border-top: 1px solid var(--line);
-}
-.about-mob-dots {
-  display: flex; gap: 6px; align-items: center;
-}
-.about-mob-dot {
-  height: 3px; border-radius: 999px;
-  background: rgba(255,255,255,0.15);
-  transition: width 0.35s var(--ease), background 0.35s;
-  width: 18px; cursor: pointer;
-}
-.about-mob-dot.active { background: var(--accent); width: 32px; }
-.about-mob-hint {
-  font-family: var(--font-mono), 'JetBrains Mono', monospace;
-  font-size: 0.52rem; letter-spacing: 0.12em;
-  text-transform: uppercase; color: #444;
 }
 
 /* =====================================================
    PROJECTS
 ===================================================== */
-#projects { height: 500vh; background: #070707; }
-.projects-sticky { background: #050505; }
+#projects { height: 600vh; background: #070707; }
 
+/* --- Desktop Sticky Scroll --- */
+.projects-desktop { display: block; }
+.projects-sticky { background: #050505; }
 .project-bg {
   position: absolute; inset: 0; background: #050505;
   transition: background 0.9s ease;
 }
 .project-bg::before {
-  content: "";
-  position: absolute; inset: 0;
+  content: ""; position: absolute; inset: 0;
   background:
     radial-gradient(circle at 25% 35%, rgba(31, 207, 255, 0.10), transparent 34%),
     radial-gradient(circle at 75% 70%, rgba(255, 255, 255, 0.045), transparent 32%);
 }
-
 .project-content {
   position: relative; z-index: 3; height: 100%;
   display: flex; align-items: center; justify-content: center;
   text-align: center; padding: 8vw;
 }
-
-/* card wrapper — handles exit/enter animation */
 .project-card {
   max-width: 900px; width: 100%;
   transition: opacity 0.35s ease, transform 0.35s var(--ease);
 }
-.project-card.exiting {
-  opacity: 0; transform: scale(0.94) translateY(-20px);
+.project-card.exiting { opacity: 0; transform: scale(0.94) translateY(-20px); }
+.project-card.entering { opacity: 0; transform: scale(0.94) translateY(20px); }
+
+/* side dot nav */
+.project-side {
+  position: absolute; right: 4vw; top: 50%; transform: translateY(-50%);
+  z-index: 5; display: flex; flex-direction: column; gap: 10px;
+  align-items: flex-end;
 }
-.project-card.entering {
-  opacity: 0; transform: scale(0.94) translateY(20px);
+.project-dot-item { display: flex; align-items: center; gap: 10px; cursor: default; }
+.project-dot-label {
+  font-family: var(--font-mono), 'JetBrains Mono', monospace; font-size: 0.52rem;
+  letter-spacing: 0.12em; color: rgba(255, 255, 255, 0.18);
+  transition: 0.35s ease; text-transform: uppercase; white-space: nowrap;
+}
+.project-dot-item.active .project-dot-label { color: rgba(255, 255, 255, 0.7); }
+.project-dot {
+  width: 6px; height: 6px; border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2); flex-shrink: 0;
+  transition: 0.35s var(--ease);
+}
+.project-dot-item.active .project-dot {
+  background: var(--accent); width: 6px; height: 18px;
+  box-shadow: 0 0 12px rgba(31, 207, 255, 0.5);
+}
+
+/* scroll progress bar */
+.project-bar {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: rgba(255,255,255,0.05); z-index: 5;
+}
+.project-bar-fill {
+  height: 100%; width: 0; background: var(--accent);
+  transition: width 0.1s linear;
+}
+
+
+/* --- Mobile Stack (hidden on desktop) --- */
+.projects-mobile { display: none !important; }
+.projects-stack-container {
+  display: flex; flex-direction: column; 
+  align-items: center;
+}
+
+.project-card-wrapper {
+  position: sticky;
+  top: calc(15vh + (var(--idx) * 20px));
+  padding-bottom: 40px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.project-stack-card {
+  width: 100%;
+  padding: 6vw 8vw;
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+  text-align: center;
+  background: #050b0d; /* Fallback, overridden inline */
 }
 
 .project-number {
@@ -432,7 +421,7 @@ a { color: inherit; text-decoration: none; }
 }
 .project-title {
   font-family: var(--font-space), 'Space Grotesk', sans-serif;
-  font-size: clamp(2.8rem, 8vw, 8rem);
+  font-size: clamp(2.8rem, 8vw, 6rem);
   line-height: 0.9; letter-spacing: -0.045em; font-weight: 600;
   margin-bottom: 24px;
   background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.6) 100%);
@@ -473,42 +462,6 @@ a { color: inherit; text-decoration: none; }
   border-color: rgba(31, 207, 255, 0.4); color: var(--accent);
 }
 .project-link.live-link:hover { background: var(--accent); color: #000; }
-
-/* side dot nav */
-.project-side {
-  position: absolute; right: 4vw; top: 50%; transform: translateY(-50%);
-  z-index: 5; display: flex; flex-direction: column; gap: 10px;
-  align-items: flex-end;
-}
-.project-dot-item {
-  display: flex; align-items: center; gap: 10px; cursor: default;
-}
-.project-dot-label {
-  font-family: var(--font-mono), 'JetBrains Mono', monospace; font-size: 0.52rem;
-  letter-spacing: 0.12em; color: rgba(255, 255, 255, 0.18);
-  transition: 0.35s ease; text-transform: uppercase; white-space: nowrap;
-}
-.project-dot-item.active .project-dot-label { color: rgba(255, 255, 255, 0.7); }
-.project-dot {
-  width: 6px; height: 6px; border-radius: 999px;
-  background: rgba(255, 255, 255, 0.2); flex-shrink: 0;
-  transition: 0.35s var(--ease);
-}
-.project-dot-item.active .project-dot {
-  background: var(--accent);
-  width: 6px; height: 18px;
-  box-shadow: 0 0 12px rgba(31, 207, 255, 0.5);
-}
-
-/* scroll progress bar (bottom of project section) */
-.project-bar {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
-  background: rgba(255,255,255,0.05); z-index: 5;
-}
-.project-bar-fill {
-  height: 100%; width: 0; background: var(--accent);
-  transition: width 0.1s linear;
-}
 
 /* =====================================================
    CONTACT
@@ -571,9 +524,12 @@ a { color: inherit; text-decoration: none; }
    RESPONSIVE — TABLET / MOBILE
 ===================================================== */
 @media (max-width: 900px) {
-  /* ── About: kill sticky entirely, show mobile layout ── */
+  /* ── About: kill sticky entirely, show mobile layout, scroll over hero ── */
   #about {
     height: auto !important; /* no more 360vh — pure flow */
+    position: relative;
+    z-index: 2;
+    background: #0a0a0a;
   }
   .sticky-section:has(.about-mobile-wrap) .sticky-inner:first-child {
     position: relative !important; /* neutralise sticky on desktop wrapper */
@@ -582,7 +538,7 @@ a { color: inherit; text-decoration: none; }
   .about-mobile-wrap { display: flex !important; }
 
   /* ── Hero ── */
-  .hero { min-height: 600px; }
+  .hero { min-height: 600px; position: sticky; top: 0; z-index: 0; }
   #lineShape { opacity: 0.3; }
   #waveCanvas { opacity: 0.3; }
   .hero-inner { left: 7.5vw; width: 85%; }
@@ -591,15 +547,11 @@ a { color: inherit; text-decoration: none; }
   .hero-scroll { left: 7.5vw; }
 
   /* ── Projects ── */
-  .project-content { padding: 10vw 7.5vw; }
+  #projects { height: auto !important; padding: 10vh 5vw 20vh; }
+  .projects-desktop { display: none !important; }
+  .projects-mobile { display: block !important; }
+  .project-stack-card { padding: 12vw 8vw; }
   .project-title { font-size: clamp(2.6rem, 14vw, 5.5rem); }
-  .project-side {
-    top: auto; right: auto; left: 50%; bottom: 18px;
-    transform: translateX(-50%); flex-direction: row; gap: 8px;
-    align-items: center;
-  }
-  .project-dot-label { display: none; }
-  .project-dot-item.active .project-dot { width: 18px; height: 6px; }
   .project-links { flex-wrap: wrap; }
 
   /* ── Contact ── */

@@ -8,7 +8,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 const projectData = [
   {
     bg: '#050b0d',
-    number: 'PROJECT 01 / 04',
+    number: 'PROJECT 01 / 05',
     kicker: 'AI + SAAS',
     title: 'ZerroLabs',
     desc: 'AI-powered gym management SaaS with multi-tenant architecture, QR attendance, memberships, analytics and Razorpay payments.',
@@ -18,7 +18,7 @@ const projectData = [
   },
   {
     bg: '#0b0805',
-    number: 'PROJECT 02 / 04',
+    number: 'PROJECT 02 / 05',
     kicker: 'AI + E-COMMERCE',
     title: 'Zerro Gifts',
     desc: 'AI-powered e-commerce and event platform with personalized product recommendations, event booking, admin workflows and payments.',
@@ -28,7 +28,7 @@ const projectData = [
   },
   {
     bg: '#07080d',
-    number: 'PROJECT 03 / 04',
+    number: 'PROJECT 03 / 05',
     kicker: 'HEALTHCARE + REAL-TIME',
     title: 'Clinic Platform',
     desc: 'End-to-end doctor appointment booking platform with an AI patient assistant, real-time appointment updates and scheduled expiry.',
@@ -38,7 +38,7 @@ const projectData = [
   },
   {
     bg: '#040d0a',
-    number: 'PROJECT 04 / 04',
+    number: 'PROJECT 04 / 05',
     kicker: 'FREELANCE · BUSINESS',
     title: 'Perfect Water\nSolutions',
     desc: 'Fast, responsive and SEO-focused business website for a water solutions company — designed to present services clearly and support lead generation.',
@@ -46,9 +46,19 @@ const projectData = [
     live: 'https://www.perfectwatersolution.co.in',
     github: null,
   },
+  {
+    bg: '#0f0514',
+    number: 'PROJECT 05 / 05',
+    kicker: 'AGENCY · AI',
+    title: 'Black Swan',
+    desc: 'Modern, responsive web development agency website built with React and TypeScript, featuring animated branding and an integrated AI assistant designed to engage potential clients.',
+    stack: ['React', 'TypeScript', 'Performance', 'Animation'],
+    live: 'https://blackswanin.vercel.app/',
+    github: 'https://github.com/RoyGraves606/BlackSwan',
+  },
 ]
 
-const sideLabels = ['01 ZERROLABS', '02 ZERRO GIFTS', '03 CLINIC', '04 WATER']
+const sideLabels = ['01 ZERROLABS', '02 ZERRO GIFTS', '03 CLINIC', '04 WATER', '05 BLACK SWAN']
 
 /* ============================================================
    HERO WAVE CANVAS
@@ -65,9 +75,11 @@ function HeroCanvas() {
     let rafId: number
 
     function resize() {
+      const currentCanvas = canvasRef.current
+      if (!currentCanvas) return
       W = window.innerWidth; H = window.innerHeight
-      canvas.width = W * dpr; canvas.height = H * dpr
-      canvas.style.width = W + 'px'; canvas.style.height = H + 'px'
+      currentCanvas.width = W * dpr; currentCanvas.height = H * dpr
+      currentCanvas.style.width = W + 'px'; currentCanvas.style.height = H + 'px'
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     }
     window.addEventListener('resize', resize)
@@ -130,114 +142,6 @@ const aboutPanels = [
   },
 ]
 
-/* ============================================================
-   MOBILE ABOUT — self-contained, no sticky, no scroll logic
-============================================================ */
-function MobileAbout({
-  mobAboutIdx,
-  setMobAboutIdx,
-}: {
-  mobAboutIdx: number
-  setMobAboutIdx: (i: number) => void
-}) {
-  const panelsContainerRef = useRef<HTMLDivElement>(null)
-  const panelRefs = useRef<(HTMLElement | null)[]>([])
-
-  // Auto-size the panels container to the tallest panel
-  useEffect(() => {
-    function measure() {
-      const container = panelsContainerRef.current
-      if (!container) return
-      let max = 320
-      panelRefs.current.forEach(el => {
-        if (!el) return
-        // temporarily show to measure
-        const prevOpacity = el.style.opacity
-        const prevPos = el.style.position
-        el.style.opacity = '0'
-        el.style.position = 'relative'
-        const h = el.scrollHeight
-        el.style.opacity = prevOpacity
-        el.style.position = prevPos
-        if (h > max) max = h
-      })
-      container.style.height = max + 'px'
-    }
-    measure()
-    window.addEventListener('resize', measure)
-    return () => window.removeEventListener('resize', measure)
-  }, [])
-
-  const labels = ['Profile', 'Stack', 'Mindset']
-
-  return (
-    <div className="about-mobile-wrap">
-      {/* ── Header ── */}
-      <div className="about-mob-header">
-        <p className="about-mob-eyebrow">01 — About</p>
-        <h2 className="about-mob-title">BUILD.<br />LEARN.<br />SHIP.</h2>
-        <p className="about-mob-copy">
-          Self-taught full-stack developer turning real business problems
-          into working software — UI, APIs, databases &amp; deployment.
-        </p>
-      </div>
-
-      {/* ── Tab row ── */}
-      <div className="about-mob-tabs">
-        {aboutPanels.map((panel, i) => (
-          <button
-            key={i}
-            className={`about-mob-tab${mobAboutIdx === i ? ' active' : ''}`}
-            onClick={() => setMobAboutIdx(i)}
-          >
-            <span className="tab-num">0{i + 1}</span>
-            {panel.kicker}
-          </button>
-        ))}
-      </div>
-
-      {/* ── Panel cards ── */}
-      <div className="about-mob-panels" ref={panelsContainerRef}>
-        {aboutPanels.map((panel, i) => (
-          <article
-            key={i}
-            ref={el => { panelRefs.current[i] = el }}
-            className={`about-mob-panel${mobAboutIdx === i ? ' active' : ''}`}
-          >
-            <span className="about-mob-panel-kicker">{panel.kicker}</span>
-            <h3>{panel.title}</h3>
-            <p>{panel.body}</p>
-            {panel.grid && (
-              <div className="mob-mini-grid">
-                {panel.grid.map(t => (
-                  <div className="mob-mini-tag" key={t}>{t}</div>
-                ))}
-              </div>
-            )}
-            <span className="about-mob-panel-ghost">{panel.num}</span>
-          </article>
-        ))}
-      </div>
-
-      {/* ── Footer: dots + hint ── */}
-      <div className="about-mob-footer">
-        <div className="about-mob-dots">
-          {aboutPanels.map((_, i) => (
-            <div
-              key={i}
-              className={`about-mob-dot${mobAboutIdx === i ? ' active' : ''}`}
-              onClick={() => setMobAboutIdx(i)}
-            />
-          ))}
-        </div>
-        <span className="about-mob-hint">
-          {String(mobAboutIdx + 1).padStart(2, '0')} / {String(aboutPanels.length).padStart(2, '0')}
-          {' '}&nbsp;{labels[mobAboutIdx]}
-        </span>
-      </div>
-    </div>
-  )
-}
 
 /* ============================================================
    MAIN PAGE
@@ -249,9 +153,6 @@ export default function Home() {
   // about desktop
   const aboutRef = useRef<HTMLElement>(null)
   const [aboutIdx, setAboutIdx] = useState(0)
-
-  // about mobile
-  const [mobAboutIdx, setMobAboutIdx] = useState(0)
 
   // projects
   const projectsRef = useRef<HTMLElement>(null)
@@ -311,7 +212,6 @@ export default function Home() {
       })
     }, 320)
   }, [])
-
   /* main scroll handler */
   useEffect(() => {
     let ticking = false
@@ -332,12 +232,11 @@ export default function Home() {
       // projects
       if (projectsRef.current) {
         const p = sectionPct(projectsRef.current)
-        const idx = Math.min(3, Math.floor(p * 4))
+        const idx = Math.min(4, Math.floor(p * 5))
         transitionProject(idx)
         if (projectBarRef.current)
           projectBarRef.current.style.width = (p * 100) + '%'
       }
-
       // contact
       if (contactRef.current && contactTrackRef.current && contactFillRef.current && contactCounterRef.current) {
         const p = sectionPct(contactRef.current)
@@ -474,12 +373,40 @@ export default function Home() {
         </div>
 
         {/* ── MOBILE LAYOUT (non-sticky, pure flow) ── */}
-        <MobileAbout mobAboutIdx={mobAboutIdx} setMobAboutIdx={setMobAboutIdx} />
+        <div className="about-mobile-wrap">
+          <div className="about-mob-header">
+            <p className="about-mob-eyebrow">01 — About</p>
+            <h2 className="about-mob-title">BUILD.<br />LEARN.<br />SHIP.</h2>
+            <p className="about-mob-copy">
+              Self-taught full-stack developer turning real business problems
+              into working software — UI, APIs, databases &amp; deployment.
+            </p>
+          </div>
+          <div className="about-mob-panels">
+            {aboutPanels.map((panel, i) => (
+              <article key={i} className="about-mob-panel">
+                <span className="about-mob-panel-kicker">{panel.kicker}</span>
+                <h3>{panel.title}</h3>
+                <p>{panel.body}</p>
+                {panel.grid && (
+                  <div className="mob-mini-grid">
+                    {panel.grid.map(t => (
+                      <div className="mob-mini-tag" key={t}>{t}</div>
+                    ))}
+                  </div>
+                )}
+                <span className="about-mob-panel-ghost">{panel.num}</span>
+              </article>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* ===== PROJECTS ===== */}
       <section id="projects" className="sticky-section" ref={projectsRef}>
-        <div className="sticky-inner projects-sticky">
+        
+        {/* DESKTOP (Sticky text-swapping scroll) */}
+        <div className="sticky-inner projects-sticky projects-desktop">
           <div className="project-bg" id="projectBg" style={{ background: data.bg }} />
 
           <div className="project-content">
@@ -528,6 +455,43 @@ export default function Home() {
           <div className="project-bar">
             <div className="project-bar-fill" ref={projectBarRef} />
           </div>
+        </div>
+
+        {/* MOBILE (Sticky Card Stack) */}
+        <div className="projects-stack-container projects-mobile">
+          {projectData.map((pd, i) => (
+            <div
+              className="project-card-wrapper"
+              key={pd.title}
+              style={{ '--idx': i } as React.CSSProperties}
+            >
+              <div className="project-stack-card" style={{ background: pd.bg }}>
+                <div className="project-number">{pd.number}</div>
+                <div className="project-kicker-pill">{pd.kicker}</div>
+                <h2 className="project-title" style={{ whiteSpace: 'pre-line' }}>{pd.title}</h2>
+                <p className="project-sub">{pd.desc}</p>
+                
+                <div className="project-stack">
+                  {pd.stack.map(tag => (
+                    <span className="stack-tag" key={tag}>{tag}</span>
+                  ))}
+                </div>
+                
+                <div className="project-links">
+                  {pd.live && (
+                    <a className="project-link live-link" href={pd.live} target="_blank" rel="noreferrer">
+                      Visit Live ↗
+                    </a>
+                  )}
+                  {pd.github && (
+                    <a className="project-link" href={pd.github} target="_blank" rel="noreferrer">
+                      GitHub
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
