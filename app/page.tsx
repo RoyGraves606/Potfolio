@@ -274,6 +274,7 @@ export default function Home() {
           <a className="nav-link" href="#about">About</a>
           <a className="nav-link" href="#projects">Projects</a>
           <a className="nav-link" href="#contact">Contact</a>
+          <a className="nav-link" href="/resume" target="_blank" rel="noreferrer">View Resume</a>
         </div>
       </nav>
 
